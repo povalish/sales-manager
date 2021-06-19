@@ -18,3 +18,17 @@ class SalesListView(ListView):
 class SaleDetailView(DetailView):
   model = Sale
   template_name = 'sales/detail.html'
+
+
+
+# Another approach
+
+def sale_list_view(request):
+  qs = Sale.objects.all()
+  return render(request, 'sales/main.html', { 'object_list': qs })
+
+
+def sale_detail_view(request, **kwargs):
+  pk = kwargs.get('pk')
+  object = Sale.objects.get(pk=pk)
+  return render(request, 'sales/detail.html', { 'object': object })

@@ -9,6 +9,11 @@
 
 
 {% block content %}
-  <h1>{{object.pk}}</h1>
-  <h2>{{object.transaction_id}}</h2>
+  <div class='card'>
+    <div class="card-body">
+      <h5 class="card-title">Sale ID: {{object.pk}}</h5>
+      <p class="card-text">Transaction ID: {{object.transaction_id}}</p>
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+  </div>
 {% endblock content %}

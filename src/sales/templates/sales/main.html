@@ -6,11 +6,11 @@ Sales list
 
 
 {% block content %}
-<h1>Sales List</h1>
+<h1 class='mb-4'>Sales List</h1>
 
-<ul>
-  {% for sale in sales_list %}
-    <li>
+<ul class='list-group'>
+  {% for sale in object_list %}
+    <li class='list-group-item'>
       <a href='{{sale.get_absolute_url}}'>{{sale}}</a>
     </li>
   {% endfor %}
