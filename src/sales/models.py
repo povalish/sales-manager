@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.utils import timezone
+from django.shortcuts import reverse, resolve_url
 
 from .utils import generate_code
 
@@ -44,6 +45,9 @@ class Sale(models.Model):
 
   def get_positions(self):
     return self.positions.all()
+
+  def get_absolute_url(self) -> str:
+    return resolve_url('sales:detail', self.pk)
 
   def __str__(self):
     return f'Sales for the amount of {self.total_price} rub.'
