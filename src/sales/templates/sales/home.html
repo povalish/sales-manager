@@ -17,5 +17,30 @@ home
   <button class='btn btn-primary mt-3'>Search</button>
 </form>
 
+<hr />
+
+{% if sales_dataframe %}
+  <h2>Sales</h2>
+  {{ sales_dataframe | safe }}
+  
+  <hr />
+
+  <h2>Positions</h2>
+  {{ positions_dataframe | safe }}
+
+  <hr />  
+
+  <h2>Merged</h2>
+  {{ salesdf_with_positiondf | safe }}
+
+  <h2>Grouped by dataframe</h2>
+  {{ main_dataframe | safe }}
+{% else %}
+  <p>No data</p>
+{% endif %}
+
+
+
+
 
 {% endblock content %}

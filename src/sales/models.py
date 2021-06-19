@@ -10,7 +10,7 @@ from customers.models import Customer
 from profiles.models import Profile
 
 
-# Create your models here.
+
 
 class Position(models.Model):
   product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -21,6 +21,12 @@ class Position(models.Model):
   def save(self, *args, **kwargs):
     self.price = self.product.price * self.quantity
     return super().save(*args, **kwargs)
+
+  def get_sale_id(self):
+    # reverse rel between child and parent
+    # Sale -> Posistion
+    sale = self.sale_set.first()
+    return sale.id
   
   def __str__(self):
     return f'id: {self.id}, product: {self.product.name}'

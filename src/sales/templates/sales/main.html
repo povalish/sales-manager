@@ -12,6 +12,7 @@ Sales list
   {% for sale in object_list %}
     <li class='list-group-item'>
       <a href='{{sale.get_absolute_url}}'>{{sale}}</a>
+      {% comment %} <a class='link' href="{% url 'sales:detail' sale.pk %}">{{sale}}</a> {% endcomment %}
     </li>
   {% endfor %}
 </ul>
