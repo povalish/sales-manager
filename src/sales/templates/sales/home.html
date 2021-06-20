@@ -1,5 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
+
+
+{% block scripts %}
+  <script src="{% static 'sales/home.js' %}" defer></script>
+{% endblock scripts %}
+
 
 {% block title %}
 home
@@ -31,10 +38,16 @@ home
   <hr />  
 
   <h2>Merged</h2>
-  {{ salesdf_with_positiondf | safe }}
+  {{ salesdf_with_positionds | safe }}
 
   <h2>Grouped by dataframe</h2>
   {{ main_dataframe | safe }}
+
+  <hr />
+
+  <h2>Graph</h2>
+  <img src="data:image/png;base64, {{ chart | safe }}" />
+  
 {% else %}
   <p>No data</p>
 {% endif %}

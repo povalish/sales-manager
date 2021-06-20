@@ -4,7 +4,7 @@ import pandas as pd
 
 from .models import Sale
 from .forms import SalesSearchForm
-from .utils import get_customer_by_id, get_salesman_by_id
+from .utils import get_customer_by_id, get_salesman_by_id, get_chart
 
 
 def home_view(request):
@@ -16,10 +16,13 @@ def home_view(request):
   positions_dataframe = None
   positions_dataframe_html = None
 
-  salesdf_with_positiondf = None
+  salesdf_with_positionds = None
+  salesdf_with_positionds_html = None
 
   main_dataframe = None
   main_dataframe_html = None
+
+  chart = None
 
 
   if request.method == 'POST':
@@ -62,13 +65,15 @@ def home_view(request):
         positions.append(position_object)
 
       positions_dataframe = pd.DataFrame(positions)
-      salesdf_with_positiondf = pd.merge(positions_dataframe, sales_dataframe, on='sales_id')
-      main_dataframe = salesdf_with_positiondf.groupby('transaction_id', as_index=False)['price'].agg('sum')
+      salesdf_with_positionds = pd.merge(positions_dataframe, sales_dataframe, on='sales_id')
+      main_dataframe = salesdf_with_positionds.groupby('transaction_id', as_index=False)['price'].agg('sum')
 
       sales_dataframe_html = sales_dataframe.to_html()
       positions_dataframe_html = positions_dataframe.to_html()
-      salesdf_with_positiondf_html = salesdf_with_positiondf.to_html()
+      salesdf_with_positionds_html = salesdf_with_positionds.to_html()
       main_dataframe_html = main_dataframe.to_html()
+
+      chart = get_chart(chart_type, main_dataframe, labels=main_dataframe['transaction_id'].values)
 
 
 
@@ -76,8 +81,9 @@ def home_view(request):
     'form': form,
     'sales_dataframe': sales_dataframe_html,
     'positions_dataframe': positions_dataframe_html,
-    'salesdf_with_positiondf': salesdf_with_positiondf_html,
+    'salesdf_with_positionds': salesdf_with_positionds_html,
     'main_dataframe': main_dataframe_html,
+    'chart': chart,
   }
 
   return render(request, 'sales/home.html', context)
