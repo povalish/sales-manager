@@ -2,13 +2,15 @@ from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 import pandas as pd
 
+from reports.forms import ReportForm
 from .models import Sale
 from .forms import SalesSearchForm
 from .utils import get_customer_by_id, get_salesman_by_id, get_chart
 
 
 def home_view(request):
-  form = SalesSearchForm(request.POST or None)
+  search_form = SalesSearchForm(request.POST or None)
+  report_form = ReportForm()
 
   sales_dataframe = None
   sales_dataframe_html = None
@@ -29,6 +31,7 @@ def home_view(request):
     date_from = request.POST.get('date_from')
     date_to = request.POST.get('date_to')
     chart_type = request.POST.get('chart_type')
+    results_by = request.POST.get('results_by')
 
     query_set = Sale.objects.filter(
       created__date__lte=date_to,
@@ -73,12 +76,14 @@ def home_view(request):
       salesdf_with_positionds_html = salesdf_with_positionds.to_html()
       main_dataframe_html = main_dataframe.to_html()
 
-      chart = get_chart(chart_type, main_dataframe, labels=main_dataframe['transaction_id'].values)
+
+      chart = get_chart(chart_type, sales_dataframe, results_by)
 
 
 
   context = {
-    'form': form,
+    'search_form': search_form,
+    'report_form': report_form,
     'sales_dataframe': sales_dataframe_html,
     'positions_dataframe': positions_dataframe_html,
     'salesdf_with_positionds': salesdf_with_positionds_html,

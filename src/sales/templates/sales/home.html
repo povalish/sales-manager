@@ -16,19 +16,23 @@ home
 
 <div class="modal fade" id="ReportModal" tabindex="-1" aria-labelledby="ReportModalLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <form class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="ReportModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="ReportModalLabel">Generate Report</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body" id='report-modal'>
+        <div class='alert d-none' id='report-alert'></div>
+
+        {% csrf_token %}
+        {{ report_form | crispy }}
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
       </div>
-    </div>
+    </form>
   </div>
 </div>
 
@@ -38,7 +42,7 @@ home
 
 <form action='' method='POST'>
   {% csrf_token %}
-  {{form | crispy}}
+  {{ search_form | crispy }}
   <button class='btn btn-primary mt-3'>Search</button>
 </form>
 
