@@ -14,6 +14,24 @@ home
 
 {% block content %}
 
+<div class="modal fade" id="ReportModal" tabindex="-1" aria-labelledby="ReportModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ReportModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <h1>Search for reports</h1>
 
 <hr />
@@ -27,33 +45,57 @@ home
 <hr />
 
 {% if sales_dataframe %}
-  <h2>Sales</h2>
-  {{ sales_dataframe | safe }}
+  <div class='card mb-5 mt-5'>
+    <div class='card-body'>
+      <h2 class='card-title'>Sales</h2>
+      {{ sales_dataframe | safe }}
+    </div>
+  </div>
   
-  <hr />
 
-  <h2>Positions</h2>
-  {{ positions_dataframe | safe }}
+  <div class='card mb-5 mt-5'>
+    <div class='card-body'>
+      <h2 class='card-title'>Positions</h2>
+      {{ positions_dataframe | safe }}
+    </div>
+  </div>
 
-  <hr />  
 
-  <h2>Merged</h2>
-  {{ salesdf_with_positionds | safe }}
+  <div class='card mb-5 mt-5'>
+    <div class='card-body'>
+      <h2 class='card-title'>Merged</h2>
+      {{ salesdf_with_positionds | safe }}
+    </div>
+  </div>
 
-  <h2>Grouped by dataframe</h2>
-  {{ main_dataframe | safe }}
 
-  <hr />
+  <div class='card mb-5 mt-5'>
+    <div class='card-body'>
+      <h2 class='card-title'>Grouped by dataframe</h2>
+      {{ main_dataframe | safe }}
+    </div>
+  </div>
 
-  <h2>Graph</h2>
-  <img src="data:image/png;base64, {{ chart | safe }}" />
-  
+
+  <div class='card mb-5 mt-5'>
+    <div class='card-body'>
+      <h2 class='card-title'>Graph</h2>
+      <img src="data:image/png;base64, {{ chart | safe }}" id='graph-img' class='card-img' />
+    </div>
+  </div>
+
+  <button class='btn btn-success'>Generate report</button>
 {% else %}
   <p>No data</p>
 {% endif %}
 
 
-
+<button 
+  class='btn btn-primary d-none' 
+  id='report-btn'
+  data-bs-toggle="modal" 
+  data-bs-target="#ReportModal"
+>Add report</button>
 
 
 {% endblock content %}
