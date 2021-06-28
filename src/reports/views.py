@@ -1,13 +1,19 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from django.views.generic import ListView, DetailView, TemplateView
-
 from django.conf import settings
 from django.http import HttpResponse
 from django.template.loader import get_template
+from django.utils.dateparse import parse_date
+
+
 from xhtml2pdf import pisa
+import csv
 
 from profiles.models import Profile
+from sales.models import Sale, Position, CSV
+from products.models import Product
+from customers.models import Customer
 
 from .utils import get_report_image
 from .models import Report
@@ -30,6 +36,54 @@ class UploadTemplateView(TemplateView):
 
 
 def csv_upload_view(request):
+  if request.method == 'POST':
+    csv_filename = request.FILES.get('file').name
+    csv_file = request.FILES.get('file')
+    csv_object, created = CSV.objects.get_or_create(
+      file_name=csv_filename,
+      csv_file=csv_file
+    )
+
+    if created:
+      with open(csv_object.csv_file.path, 'r') as f:
+        reader = csv.reader(f)
+        reader.__next__()
+
+        for row in reader:
+          data = "".join(row)
+          data = data.split(';')
+          data.pop()
+
+          transaction_id = data[1]
+          product = data[2]
+          quantity = int(data[3])
+          customer = data[4]
+          date = parse_date(date[5])
+
+          try:
+            product_object = Product.objects.get(name__iexact=product)
+          except Product.DoesNotExist:
+            product_object = None
+
+          if product_object is not None:
+            customer_object, _ = Customer.objects.get_or_create(name=customer)
+            salesman_object = Profile.objects.get(user=request.user)
+            position_object = Position.objects.create(
+              product=product_object,
+              quantity=quantity,
+              created=date,
+            )
+            sale_object, _ = Sale.objects.get_or_create(
+              transaction_id=transaction_id,
+              customer=customer_object,
+              salesman=salesman_object,
+            )
+            sale_object.positions.add(position_object)
+            sale_object.save()
+
+        return JsonResponse({'message': 'Create new entries'})
+    else:
+      return JsonResponse({'message': 'This file was already processed.'})    
   return HttpResponse()
 
 

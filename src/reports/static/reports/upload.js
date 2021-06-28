@@ -2,6 +2,15 @@ const csrf = document.getElementsByName('csrfmiddlewaretoken')[0].value;
 const alertBox = document.getElementById('alert-box');
 
 
+
+const handleAlerts = (type, message) => {
+  reportAlert.innerHTML = `
+    <div class="alert alert-${type}" role="alert">
+      ${message}
+    </div>
+  `
+}
+
 Dropzone.autoDiscover = false
 const myDropzone = new Dropzone('#my-dropozne', {
   url: '/reports/upload/',
