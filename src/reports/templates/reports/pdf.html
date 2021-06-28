@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{pdfTitle}}</title>
+
+  <style>
+    .image {
+      width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>{{ object.name }}</h1>
+  <hr />
+
+  <img src="{{ object.image.path }}" />
+
+  <h2>Remarks</h2>
+  <p>{{ object.remarks }}</p>
+
+  <p>
+    Author: {{ object.author.user.username }} <br />
+    Created: {{ object.created }}
+  </p>
+</body>
+</html>

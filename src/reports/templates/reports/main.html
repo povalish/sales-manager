@@ -12,7 +12,12 @@
   <ul class='list-group'>
     {% for obj in object_list %}
       <li class='list-group-item'>
-        <a href='{{obj.get_absolute_url}}'>{{obj.name}}</a>
+        <div class='card'>
+          <div class='card-body'>
+            <a href='{{obj.get_absolute_url}}'>Report name: {{obj.name}}</a> <br />
+            <a href="{% url 'reports:pdf' obj.pk %}">Download PDF: {{obj.name}}</a>
+          </div>
+        </div>
       </li>
     {% endfor %}
   </ul>
